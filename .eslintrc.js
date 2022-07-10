@@ -11,6 +11,7 @@ module.exports = {
     project: "./tsconfig.json",
   },
   rules: {
+    "react/prop-types": "off",
     "react/react-in-jsx-scope": "off",
     "react/function-component-definition": [
       2,
