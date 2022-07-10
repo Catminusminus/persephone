@@ -6,6 +6,7 @@ import { Preview } from "react-split-mde/lib/components/Preview";
 import { Textarea } from "react-split-mde/lib/components/Textarea";
 import { useDebounce } from "react-split-mde/lib/hooks/debounce";
 import { Command } from "react-split-mde/lib/types";
+import { nanoid } from "nanoid";
 import { Contents, Text, ID } from "../types";
 
 type Props = {
@@ -16,12 +17,14 @@ type Props = {
   parser: (text: string) => Promise<string>;
   values: Contents;
   onChange?: (id: ID, text: Text) => void;
-  addValue: (text: Text) => void;
+  addValue: (id: ID, text: Text) => void;
   removeValue: (id: ID) => void;
   psudoMode?: boolean;
   debounceTime?: number;
   scrollSync?: boolean;
   placeholder?: string;
+  changeContentToDB: (id: string, text: string) => Promise<void>;
+  deleteContentFromDB: (id: string) => Promise<void>;
 };
 
 export const Editor: React.FC<Props> = ({
@@ -38,6 +41,8 @@ export const Editor: React.FC<Props> = ({
   debounceTime = 200,
   scrollSync = true,
   placeholder = "",
+  changeContentToDB,
+  deleteContentFromDB,
 }) => {
   const ref = useRef<HTMLTextAreaElement>(null);
   const [selectedTab, setSelectedTab] = useState(0);
@@ -74,9 +79,13 @@ export const Editor: React.FC<Props> = ({
                     if (selectedTab === 0) {
                       setSelectedTab(1);
                       removeValue(id);
+                      // eslint-disable-next-line no-void
+                      void deleteContentFromDB(id as string);
                     }
                     setSelectedTab((selected) => selected - 1);
                     removeValue(id);
+                    // eslint-disable-next-line no-void
+                    void deleteContentFromDB(id as string);
                   }}
                 >
                   <XIcon className="h-5 w-5 hover:bg-slate-200" />
@@ -87,7 +96,15 @@ export const Editor: React.FC<Props> = ({
             </Tab>
           ))}
         </Tab.List>
-        <button type="button" onClick={() => addValue("" as Text)}>
+        <button
+          type="button"
+          onClick={() => {
+            const id = nanoid();
+            addValue(id as ID, "" as Text);
+            // eslint-disable-next-line no-void
+            void changeContentToDB(id, "");
+          }}
+        >
           <PlusSmIcon className="h-5 w-5 hover:bg-slate-200" />
         </button>
         <Tab.Panels>
@@ -100,7 +117,11 @@ export const Editor: React.FC<Props> = ({
                   scrollSync={scrollSync}
                   className={textareaClassName}
                   psudoMode={psudoMode}
-                  onChange={handleTextareaChange}
+                  onChange={(text_) => {
+                    handleTextareaChange(text_);
+                    // eslint-disable-next-line no-void
+                    void changeContentToDB(id as string, text_);
+                  }}
                   commands={commands}
                   value={text as string}
                 />
