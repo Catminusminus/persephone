@@ -6,7 +6,6 @@ export const useDB = () => {
   const [storage, setStorage] = useState<KVSIndexedDB<KVSIndexedSchema>>(null);
   useEffect(() => {
     if (init) {
-      // TODO
       // eslint-disable-next-line no-void
       void (async () => {
         const db = await kvsIndexedDB({
@@ -14,8 +13,7 @@ export const useDB = () => {
           version: 1,
         });
         setStorage(db);
-      })();
-      setInit(false);
+      })().then(() => setInit(false));
     }
   }, [init]);
   const changeContentToDB = async (id: string, text: string) => {
