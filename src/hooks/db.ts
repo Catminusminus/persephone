@@ -20,6 +20,7 @@ export const useDB = () => {
   }, [init]);
   const changeContentToDB = async (id: string, text: string) => {
     await storage.set(id, text);
+    console.log(text);
   };
   const deleteContentFromDB = async (id: string) => {
     await storage.delete(id);
@@ -27,5 +28,7 @@ export const useDB = () => {
   return {
     changeContentToDB,
     deleteContentFromDB,
+    init,
+    storage,
   };
 };
