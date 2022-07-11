@@ -3,5 +3,11 @@
   "minor": {
     "groupName": "all dependencies"
   },
+  "packageRules": [
+    {
+      "matchPackagePatterns": ["^zenn-markdown-html"],
+      "enabled": false
+    }
+  ],
   "automerge": true
 }
