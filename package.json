@@ -27,7 +27,7 @@
     "remark-html": "^15.0.1",
     "swr": "^1.3.0",
     "tailwindcss": "^3.1.4",
-    "zenn-markdown-html": "0.1.70"
+    "zenn-markdown-html": "0.1.114"
   },
   "devDependencies": {
     "@testing-library/react": "^13.3.0",
