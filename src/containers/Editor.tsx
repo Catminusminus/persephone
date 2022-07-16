@@ -1,5 +1,5 @@
 import { Tab } from "@headlessui/react";
-import { PlusSmIcon, XIcon, DocumentIcon } from "@heroicons/react/solid";
+import { PlusSmIcon } from "@heroicons/react/solid";
 import { useRef, useState, useCallback, useDeferredValue, memo } from "react";
 import * as defaultCommands from "react-split-mde/lib/commands";
 import { Preview } from "react-split-mde/lib/components/Preview";
@@ -7,6 +7,7 @@ import { Textarea } from "react-split-mde/lib/components/Textarea";
 import { Command } from "react-split-mde/lib/types";
 import { nanoid } from "nanoid";
 import { Contents, Text, ID } from "../types";
+import { TabItem } from "../components/TabItem";
 
 type Props = {
   commands?: Record<string, Command>;
@@ -25,58 +26,6 @@ type Props = {
   changeContentToDB: (id: string, index: number, text: string) => Promise<void>;
   deleteContentFromDB: (id: string, index: number) => Promise<void>;
 };
-
-type TabItemProps = {
-  index: number;
-  id: ID;
-  selectedTab: number;
-  size: number;
-  setSelectedTab: any;
-  removeValue: any;
-  deleteContentFromDB: any;
-};
-
-const TabItem: React.FC<TabItemProps> = memo(
-  ({
-    index,
-    id,
-    selectedTab,
-    size,
-    setSelectedTab,
-    removeValue,
-    deleteContentFromDB,
-  }) => (
-    <Tab
-      key={index}
-      className={({ selected }) => (selected ? "w-full bg-blue-500" : "w-full")}
-    >
-      {index === selectedTab ? (
-        <button
-          type="button"
-          onClick={() => {
-            if (size === 1) {
-              return;
-            }
-            if (selectedTab === 0) {
-              setSelectedTab(1);
-              removeValue(id, index);
-              // eslint-disable-next-line no-void
-              void deleteContentFromDB(id as string, index);
-            }
-            setSelectedTab((selected) => selected - 1);
-            removeValue(id, index);
-            // eslint-disable-next-line no-void
-            void deleteContentFromDB(id as string, index);
-          }}
-        >
-          <XIcon className="h-5 w-5 hover:bg-slate-200" />
-        </button>
-      ) : (
-        <DocumentIcon className="h-5 w-5" />
-      )}
-    </Tab>
-  )
-);
 
 export const Editor: React.FC<Props> = ({
   commands = defaultCommands,
