@@ -16,12 +16,19 @@ export const useDB = () => {
       })().then(() => setInit(false));
     }
   }, [init]);
-  const changeContentToDB = async (id: string, text: string) => {
-    await storage.set(id, text);
-    console.log(text);
+  const changeContentToDB = async (id: string, index: number, text: string) => {
+    await storage.set(id, { index, text });
   };
-  const deleteContentFromDB = async (id: string) => {
+  const deleteContentFromDB = async (id: string, index: number) => {
     await storage.delete(id);
+    const oldIndex = index;
+    for await (const [key, value] of storage) {
+      if (value.index <= oldIndex) {
+        await storage.set(key, value);
+      } else {
+        await storage.set(key, { index: value.index - 1, text: value.text });
+      }
+    }
   };
   return {
     changeContentToDB,

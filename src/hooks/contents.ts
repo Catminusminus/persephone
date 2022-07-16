@@ -1,36 +1,47 @@
 import { useState } from "react";
 import { nanoid } from "nanoid";
-import { Text, Contents, ID } from "../types";
+import { Text, Contents, ID, Content } from "../types";
 import { createContents } from "../util";
 
 const defaultText = "# React Split MDE" as Text;
 const defaultID = nanoid() as ID;
 export const useContents = () => {
   const [values, setValues] = useState<Contents>(
-    new Map<ID, Text>([[defaultID, defaultText]])
+    new Map<ID, Content>([[defaultID, { index: 0, text: defaultText }]])
   );
-  const addValue = (id: ID, newText: Text) => {
+  const addValue = (id: ID, index: number, text: Text) => {
     setValues((oldValues) => {
-      oldValues.set(id, newText);
+      oldValues.set(id, { index, text });
       return createContents(oldValues);
     });
   };
-  const removeValue = (id: ID) => {
+  const removeValue = (id: ID, index: number) => {
     setValues((oldValues) => {
+      const oldIndex = index;
       oldValues.delete(id);
-      return createContents(oldValues);
+      const newValue = new Map<ID, Content>();
+      for (const [id, value] of oldValues) {
+        if (value.index <= oldIndex) {
+          newValue.set(id, value);
+        } else {
+          newValue.set(id, { index: value.index - 1, text: value.text });
+        }
+      }
+      return newValue;
     });
   };
-  const changeText = (id: ID, text: Text) => {
+  const changeText = (id: ID, index: number, text: Text) => {
     setValues((oldValues) => {
-      oldValues.set(id, text);
+      oldValues.set(id, { index, text });
       return createContents(oldValues);
     });
   };
   return {
+    defaultID,
     values,
     addValue,
     removeValue,
     changeText,
+    setValues,
   };
 };
