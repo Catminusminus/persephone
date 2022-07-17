@@ -30,7 +30,7 @@ type Props = {
 export const Editor: React.FC<Props> = ({
   commands = defaultCommands,
   textareaClassName,
-  previewClassName = "react-split-mde-preview",
+  previewClassName = "react-split-mde-preview mx-4",
   previewCallback = {},
   parser,
   values,
@@ -100,7 +100,7 @@ export const Editor: React.FC<Props> = ({
                       ref={ref}
                       placeholder={placeholder}
                       scrollSync={scrollSync}
-                      className="h-full"
+                      className="h-full mx-4"
                       psudoMode={psudoMode}
                       onChange={(text_) => {
                         handleTextareaChange(index, text_);
