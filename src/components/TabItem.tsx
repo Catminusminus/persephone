@@ -25,10 +25,11 @@ export const TabItem: React.FC<TabItemProps> = memo(
   }) => (
     <Tab
       key={index}
-      className={({ selected }) => (selected ? "w-full bg-blue-500" : "w-full")}
+      className={({ selected }) => (selected ? "w-20 bg-gray-200" : "w-20")}
     >
       {index === selectedTab ? (
         <button
+          className=""
           type="button"
           onClick={() => {
             if (size === 1) {

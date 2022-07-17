@@ -57,62 +57,67 @@ export const Editor: React.FC<Props> = ({
     [...values.values()][selectedTab].text
   ) as string;
   return (
-    <div className="react-split-mde-wrap">
-      <Tab.Group onChange={setSelectedTab} selectedIndex={selectedTab}>
-        <Tab.List className="flex">
-          {[...values.entries()]
-            .sort((a, b) => (a[1].index < b[1].index ? -1 : 1))
-            .map(([id, value], index) => (
-              <TabItem
-                key={index}
-                size={values.size}
-                index={value.index}
-                id={id}
-                selectedTab={selectedTab}
-                setSelectedTab={setSelectedTab}
-                removeValue={removeValue}
-                deleteContentFromDB={deleteContentFromDB}
-              />
-            ))}
-        </Tab.List>
-        <button
-          type="button"
-          onClick={() => {
-            const id = nanoid();
-            // eslint-disable-next-line no-void
-            void changeContentToDB(id, values.size, "");
-            addValue(id as ID, values.size, "" as Text);
-          }}
-        >
-          <PlusSmIcon className="h-5 w-5 hover:bg-slate-200" />
-        </button>
-        <Tab.Panels>
-          {[...values.entries()]
-            .sort((a, b) => (a[1].index < b[1].index ? -1 : 1))
-            .map(([id, value], index) => (
-              <Tab.Panel key={value.index}>
-                <div className="react-split-mde react-split-mde-box">
-                  <Textarea
-                    ref={ref}
-                    placeholder={placeholder}
-                    scrollSync={scrollSync}
-                    className={textareaClassName}
-                    psudoMode={psudoMode}
-                    onChange={(text_) => {
-                      handleTextareaChange(index, text_);
-                      // eslint-disable-next-line no-void
-                      void changeContentToDB(id as string, index, text_);
-                    }}
-                    commands={commands}
-                    value={value.text as string}
+    <div className="flex h-full">
+      <div className="w-1/2 h-full">
+        <Tab.Group onChange={setSelectedTab} selectedIndex={selectedTab}>
+          <div className="flex divide-x h-6">
+            <Tab.List className="divide-x">
+              {[...values.entries()]
+                .sort((a, b) => (a[1].index < b[1].index ? -1 : 1))
+                .map(([id, value], index) => (
+                  <TabItem
+                    key={index}
+                    size={values.size}
+                    index={value.index}
+                    id={id}
+                    selectedTab={selectedTab}
+                    setSelectedTab={setSelectedTab}
+                    removeValue={removeValue}
+                    deleteContentFromDB={deleteContentFromDB}
                   />
-                </div>
-              </Tab.Panel>
-            ))}
-        </Tab.Panels>
-      </Tab.Group>
-
-      <div className="react-split-mde-box">
+                ))}
+            </Tab.List>
+            <button
+              className="h-5 w-5 hover:bg-slate-200"
+              type="button"
+              onClick={() => {
+                const id = nanoid();
+                // eslint-disable-next-line no-void
+                void changeContentToDB(id, values.size, "");
+                addValue(id as ID, values.size, "" as Text);
+              }}
+            >
+              <PlusSmIcon className="" />
+            </button>
+          </div>
+          <Tab.Panels className="">
+            {[...values.entries()]
+              .sort((a, b) => (a[1].index < b[1].index ? -1 : 1))
+              .map(([id, value], index) => (
+                <Tab.Panel key={value.index} className="h-full">
+                  <div className="bg-gray-200 h-full">
+                    <Textarea
+                      ref={ref}
+                      placeholder={placeholder}
+                      scrollSync={scrollSync}
+                      className="h-full"
+                      psudoMode={psudoMode}
+                      onChange={(text_) => {
+                        handleTextareaChange(index, text_);
+                        // eslint-disable-next-line no-void
+                        void changeContentToDB(id as string, index, text_);
+                      }}
+                      commands={commands}
+                      value={value.text as string}
+                    />
+                  </div>
+                </Tab.Panel>
+              ))}
+          </Tab.Panels>
+        </Tab.Group>
+      </div>
+      <div className="w-1/2">
+        <div className="h-6">Preview</div>
         <Preview
           value={debouncedText}
           className={previewClassName}

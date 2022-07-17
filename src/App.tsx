@@ -14,7 +14,7 @@ export const App = () => {
   } = useApp();
   console.log(values);
   return (
-    <div className="editor-demo">
+    <div className="h-screen">
       <Editor
         values={values}
         addValue={addValue}
