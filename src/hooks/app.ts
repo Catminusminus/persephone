@@ -1,15 +1,40 @@
-import { useEffect, useState } from "react";
+import { useLayoutEffect, useState } from "react";
+import { kvsIndexedDB } from "@kvs/indexeddb";
 import { useContents } from "./contents";
-import { useDB } from "./db";
 import { ID, Text, Contents, Content } from "../types";
+
+const storage = await kvsIndexedDB({
+  name: "contents",
+  version: 1,
+});
+
+export const changeContentToDB = async (
+  id: string,
+  index: number,
+  text: string
+) => {
+  console.log(storage);
+  await storage.set(id, { index, text });
+};
+
+export const deleteContentFromDB = async (id: string, index: number) => {
+  await storage.delete(id);
+  const oldIndex = index;
+  for await (const [key, value] of storage) {
+    if (value.index <= oldIndex) {
+      await storage.set(key, value);
+    } else {
+      await storage.set(key, { index: value.index - 1, text: value.text });
+    }
+  }
+};
 
 export const useApp = () => {
   const [appInit, setAppInit] = useState(true);
   const { defaultID, values, addValue, removeValue, changeText, setValues } =
     useContents();
-  const { changeContentToDB, deleteContentFromDB, init, storage } = useDB();
-  useEffect(() => {
-    if (!init && appInit) {
+  useLayoutEffect(() => {
+    if (appInit) {
       console.log(storage);
       void (async () => {
         const newValues: Contents = new Map<ID, Content>();
@@ -24,13 +49,11 @@ export const useApp = () => {
         setValues(newValues);
       })();
     }
-  }, [init, storage, appInit]);
+  }, [appInit]);
   return {
     values,
     addValue,
     removeValue,
     changeText,
-    changeContentToDB,
-    deleteContentFromDB,
   };
 };

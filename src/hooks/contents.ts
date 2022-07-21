@@ -1,13 +1,13 @@
 import { useState } from "react";
-import { nanoid } from "nanoid";
 import { Text, Contents, ID, Content } from "../types";
 import { createContents } from "../util";
 
 const defaultText = "# React Split MDE" as Text;
-const defaultID = nanoid() as ID;
+const zero = 0;
+const defaultID = zero.toString() as ID;
 export const useContents = () => {
   const [values, setValues] = useState<Contents>(
-    new Map<ID, Content>([[defaultID, { index: 0, text: defaultText }]])
+    new Map<ID, Content>([[defaultID, { index: zero, text: defaultText }]])
   );
   const addValue = (id: ID, index: number, text: Text) => {
     setValues((oldValues) => {

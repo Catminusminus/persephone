@@ -1,10 +1,12 @@
-import { useState, useEffect } from "react";
+import { useState, useLayoutEffect } from "react";
 import { KVSIndexedSchema, KVSIndexedDB, kvsIndexedDB } from "@kvs/indexeddb";
 
 export const useDB = () => {
   const [init, setInit] = useState(true);
-  const [storage, setStorage] = useState<KVSIndexedDB<KVSIndexedSchema>>(null);
-  useEffect(() => {
+  const [storage, setStorage] = useState<KVSIndexedDB<KVSIndexedSchema> | null>(
+    null
+  );
+  useLayoutEffect(() => {
     if (init) {
       // eslint-disable-next-line no-void
       void (async () => {
@@ -13,12 +15,16 @@ export const useDB = () => {
           version: 1,
         });
         setStorage(db);
-      })().then(() => setInit(false));
+        setInit(false);
+      })();
     }
   }, [init]);
   const changeContentToDB = async (id: string, index: number, text: string) => {
+    const hack = storage;
+    console.log(storage);
     await storage.set(id, { index, text });
   };
+  console.log(storage);
   const deleteContentFromDB = async (id: string, index: number) => {
     await storage.delete(id);
     const oldIndex = index;
