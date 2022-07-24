@@ -55,5 +55,6 @@ export const useApp = () => {
     addValue,
     removeValue,
     changeText,
+    appInit,
   };
 };

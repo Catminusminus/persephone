@@ -4,19 +4,23 @@ import "react-split-mde/css/index.css";
 import { useApp, changeContentToDB, deleteContentFromDB } from "./hooks/app";
 
 export const App = () => {
-  const { values, addValue, removeValue, changeText } = useApp();
+  const { values, addValue, removeValue, changeText, appInit } = useApp();
   console.log(values);
   return (
     <div className="h-screen">
-      <Editor
-        values={values}
-        addValue={addValue}
-        removeValue={removeValue}
-        onChange={changeText}
-        parser={parser}
-        changeContentToDB={changeContentToDB}
-        deleteContentFromDB={deleteContentFromDB}
-      />
+      {appInit ? (
+        <div>Checking Contents...</div>
+      ) : (
+        <Editor
+          values={values}
+          addValue={addValue}
+          removeValue={removeValue}
+          onChange={changeText}
+          parser={parser}
+          changeContentToDB={changeContentToDB}
+          deleteContentFromDB={deleteContentFromDB}
+        />
+      )}
     </div>
   );
 };

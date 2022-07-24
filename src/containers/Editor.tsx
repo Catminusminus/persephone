@@ -44,7 +44,7 @@ const TextareaWrapper = ({
     // eslint-disable-next-line no-void
     void changeContentToDB(id as string, index, text_);
   };
-  console.log(id);
+  console.log(ref.current?.value);
   return (
     <Textarea
       ref={ref}
