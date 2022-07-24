@@ -8,9 +8,7 @@ export const App = () => {
   console.log(values);
   return (
     <div className="h-screen">
-      {appInit ? (
-        <div>Checking Contents...</div>
-      ) : (
+      {appInit ? null : (
         <Editor
           values={values}
           addValue={addValue}
