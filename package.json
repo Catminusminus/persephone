@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "@headlessui/react": "^1.6.6",
-    "@heroicons/react": "^1.0.6",
+    "@heroicons/react": "^2.0.0",
     "@kvs/indexeddb": "^2.1.1",
     "nanoid": "^4.0.0",
     "react": "^18.2.0",
