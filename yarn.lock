@@ -2152,10 +2152,10 @@ hamt_plus@1.0.2:
   resolved "https://registry.yarnpkg.com/hamt_plus/-/hamt_plus-1.0.2.tgz#e21c252968c7e33b20f6a1b094cd85787a265601"
   integrity sha512-t2JXKaehnMb9paaYA7J0BX8QQAY8lwfQ9Gjf4pg/mk4krt+cmwmU652HOoWonf+7+EQV97ARPMhhVgU1ra2GhA==
 
-happy-dom@^6.0.4:
-  version "6.0.4"
-  resolved "https://registry.yarnpkg.com/happy-dom/-/happy-dom-6.0.4.tgz#553c1a8ba842455beb975c579d769914808c7404"
-  integrity sha512-b+ID23Ms0BY08UNLymsOMG7EI2jSlwEt4cbJs938GZfeNAg+fqgkSO3TokQMgSOFoHznpjWmpVjBUL5boJ9PWw==
+happy-dom@^7.0.0:
+  version "7.4.0"
+  resolved "https://registry.yarnpkg.com/happy-dom/-/happy-dom-7.4.0.tgz#8caa8fb31fba199b6a792fe68ccaf78e6cf26d52"
+  integrity sha512-vczfEc7g+kUWA7cKTeSDI/pQSCyAInxC0TMTR9Pjy211jHt8ZBo+3HGU51XNHimLmvVWdvaWvMdfOfhvW1H1uw==
   dependencies:
     css.escape "^1.5.1"
     he "^1.2.0"
